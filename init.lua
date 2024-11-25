@@ -281,13 +281,13 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
 
   -- NOTE: ROBLOX LUAU LSP PLUGIN
-  {
+  --[[{
     'lopi-py/luau-lsp.nvim',
     opts = LUAU_LSP_DEFAULTS,
     dependencies = {
       'nvim-lua/plenary.nvim',
     },
-  },
+  },]]
 
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
