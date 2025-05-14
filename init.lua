@@ -205,9 +205,6 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
-vim.opt.tabstop = 4
-vim.opt.shiftwidth = 4
-
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -290,7 +287,7 @@ require('lazy').setup({
   },]]
 
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  -- 'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -1031,6 +1028,8 @@ require('lazy').setup({
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
   -- { import = 'custom.plugins' },
+
+  
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
@@ -1052,6 +1051,29 @@ require('lazy').setup({
     },
   },
 })
+
+local function setWidth(chars, useSpaces)
+    -- use real tabs or spaces
+  vim.bo.expandtab = useSpaces or false
+  -- width of a real tab
+  vim.bo.tabstop = chars
+  -- width for <<, >>, auto-indent, etc.
+  vim.bo.shiftwidth = chars
+  -- set columns when editing
+  vim.bo.softtabstop = chars
+end
+
+setWidth(4, false)
+-- ──────────────────────────────────────────────────────────────────────────────
+-- force 4-space real-tabs for C/C++/headers regardless of detected style
+-- ──────────────────────────────────────────────────────────────────────────────
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "c", "cpp", "h", "hpp" },
+  callback = function()
+    setWidth(4, false)
+  end,
+})
+
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
